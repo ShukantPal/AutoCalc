@@ -22,7 +22,7 @@ __copyright__ = "Copyright (C) 2018 Shukant Pal"
 __license__ = "GNU General Public License v3"
 __version__ = 1.0
 
-from calcapi import *
+from calc import *
 from calcread import *
 
 def exp(rawstr):
@@ -50,54 +50,16 @@ def exp(rawstr):
                 token_chain.append(atok)
         else:
             tlen = other_length(rawstr, pointer)
+            nptr = pointer
             
-            if(tlen == 1):
-                otok = Token(TOKEN_OPERATOR, rawstr[pointer])
+            while nptr < tlen + pointer:
+                otok = Token(TOKEN_OPERATOR, rawstr[nptr])
                 token_chain.append(otok)
-            else:
-                raise NotImplementedError("Unknown token found at " + str(pointer))
+                nptr += 1
             
         pointer += tlen
     
     return token_chain
-
-def printexp(texp):
-    for tok in texp:
-        print str(tok.val),
-    print("")
-
-def solve_bin_levl(texp, levl):
-    pointer = 0 # dynamic pointer (index) to current element
-    
-    while pointer < len(texp): # len of texp will change
-        if(texp[pointer].type == TOKEN_NUMBER):
-            pointer += 1
-            continue
-        
-        # First we have to identify the type of resolver, which
-        # could be unary/binary operator, function, etc.
-        
-        if pointer == 0 and texp[1].type == TOKEN_NUMBER: # unary-op
-            pointer += 1
-            continue
-        elif pointer == len(texp)-1:
-            break # can't be a binary operator
-
-        if texp[pointer-1].type == TOKEN_NUMBER and \
-           texp[pointer+1].type == TOKEN_NUMBER: # binary operator, eval
-            binop = texp[pointer].bin_op()
-            
-            if binop.levl() < levl:
-                pointer+=1
-                continue
-            
-            new_ptr = binop.adj(texp, pointer)
-            binop.res(texp, pointer)
-            printexp(texp)
-            pointer = new_ptr
-            continue
-
-    return texp[0].val # result
 
 def init():
         print("Autocalc 1.x initialized!");
@@ -108,8 +70,7 @@ def main():
         
         tch = exp(mexp)
         
-        r = solve_bin_levl(tch,1)
-        r = solve_bin_levl(tch,0)
+        r = ParenOp.eval(tch)
         
         print("Result: " + str(r));
 
