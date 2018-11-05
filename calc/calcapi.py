@@ -40,6 +40,8 @@ from binop import ModOp
 from binop import ExpOp
 
 from parenop import ParenOp
+
+from func import Average
         
 # Dictionaries for mapping (abstract) Resolver identifiers (like '+')
 # to their class object (like AddOp).
@@ -70,4 +72,8 @@ paren_open_bind = {
 
 paren_close_bind = {
     ')', '}', ']'
+}
+
+rtfunc_bind = {
+    "avg": Average
 }

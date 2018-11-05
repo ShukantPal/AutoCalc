@@ -26,6 +26,7 @@ from calc import *
 from calcread import *
 
 def exp(rawstr):
+    """Converts the string input into a list of tokens"""
     pointer = 0 # current character being processed
     tlen = 0 # token length
     rlen = len(rawstr)

@@ -17,6 +17,7 @@
 
 from resolver import *
 from solve import *
+
 import calcapi
 
 class ParenOp(Resolver):
@@ -67,8 +68,9 @@ class ParenOp(Resolver):
     @staticmethod
     def eval(tlist):
         ridx = 0
-        rlen = len(tlist)
+        solveallfuncs(tlist)
         
+        rlen = len(tlist)
         while ridx < rlen:
             if tlist[ridx].type == TOKEN_OPERATOR and \
                tlist[ridx].val in calcapi.paren_open_bind:

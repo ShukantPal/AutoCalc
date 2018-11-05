@@ -1,10 +1,42 @@
 from resolver import *
 from token import *
 
+import func
+import calcapi
+
 def printexp(texp):
     for tok in texp:
         print str(tok.val),
     print("")
+
+def solveallfuncs(texp):
+    """Solves all functions in the highest scope
+    
+    Before sub-expressions, all functions are resolved, which
+    paradoxically means that functions in sub-expressions won't
+    be resolved first. This method just resolves functions that
+    are not enclosed in parenthesis.
+    """
+
+    pointer = 0
+    tlen = len(texp)
+    sdepth = 0
+
+    while pointer < tlen:
+        if sdepth == 0 and texp[pointer].type == TOKEN_RESOLVER:
+            calcapi.rtfunc_bind[texp[pointer].val].res(texp, pointer) # no need for adj (we already know)
+            tlen = len(texp)
+            pointer += 1
+            continue
+        
+        if texp[pointer].type == TOKEN_OPERATOR:
+            if texp[pointer].val in calcapi.paren_open_bind:
+                sdepth += 1
+            elif texp[pointer].val in calcapi.paren_close_bind:
+                sdepth -= 1
+        
+        pointer += 1
+                
 
 def solve_bin_levl(texp, levl):
     pointer = 0 # dynamic pointer (index) to current element

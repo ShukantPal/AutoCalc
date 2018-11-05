@@ -1,7 +1,7 @@
 # Copyright (C) 2018 - Shukant Pal
 #
 # This file is a part of AutoCalc
-#
+#             
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
@@ -81,7 +81,7 @@ def _digofch(ch):
 
 def convert_to_int(raw_exp, cidx, dlim):
     """Returns the numeric value for the substring given"""
-    num = 0;
+    num = 0.;
     while(cidx < dlim):
         num = 10 * num + _digofch(raw_exp[cidx]);
         cidx += 1
